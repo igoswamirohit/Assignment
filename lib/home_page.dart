@@ -34,12 +34,14 @@ class Home extends StatelessWidget {
         body: FutureBuilder(
           future: Provider.of<NewsProvider>(context, listen: false).getNews(),
           builder: (context, snapshot) {
+            if(snapshot.connectionState == ConnectionState.waiting){
+              return Center(child: CircularProgressIndicator());
+            }
             if (snapshot.hasData)
               return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) =>
                       ArticleCard(snapshot.data[index]));
-            return CircularProgressIndicator();
           },
         ));
   }
